@@ -31,8 +31,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	infrastructurev1beta1 "weiyuanke/cluster-api-provider-huaweicloud/api/v1beta1"
-	"weiyuanke/cluster-api-provider-huaweicloud/controllers"
+	infrastructurev1beta1 "weiyuanke/cluster-api-provider-huaweicloud/api/v1beta1/api/v1beta1"
+	"weiyuanke/cluster-api-provider-huaweicloud/api/v1beta1/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -71,7 +71,7 @@ func main() {
 		Port:                   9443,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "c39ff2b6.cluster.x-k8s.io",
+		LeaderElectionID:       "69ac7a64.cluster.x-k8s.io",
 		// LeaderElectionReleaseOnCancel defines if the leader should step down voluntarily
 		// when the Manager ends. This requires the binary to immediately end when the
 		// Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
@@ -89,11 +89,25 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.HuaweicloudClusterReconciler{
+	if err = (&controller.HuaweiCloudClusterReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "HuaweicloudCluster")
+		setupLog.Error(err, "unable to create controller", "controller", "HuaweiCloudCluster")
+		os.Exit(1)
+	}
+	if err = (&controller.HuaweiCloudMachineReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "HuaweiCloudMachine")
+		os.Exit(1)
+	}
+	if err = (&controller.HuaweiCloudMachineTemplateReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "HuaweiCloudMachineTemplate")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

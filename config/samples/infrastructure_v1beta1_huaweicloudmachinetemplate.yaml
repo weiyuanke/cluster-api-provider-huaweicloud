@@ -1,12 +1,12 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-kind: HuaweiCloudCluster
+kind: HuaweiCloudMachineTemplate
 metadata:
   labels:
-    app.kubernetes.io/name: huaweicloudcluster
-    app.kubernetes.io/instance: huaweicloudcluster-sample
+    app.kubernetes.io/name: huaweicloudmachinetemplate
+    app.kubernetes.io/instance: huaweicloudmachinetemplate-sample
     app.kubernetes.io/part-of: cluster-api-provider-huaweicloud
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: cluster-api-provider-huaweicloud
-  name: huaweicloudcluster-sample
+  name: huaweicloudmachinetemplate-sample
 spec:
   # TODO(user): Add fields here
